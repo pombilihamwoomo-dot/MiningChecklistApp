@@ -10,7 +10,7 @@ Features
 - User-friendly mobile interface
 
 Installation
-1. Clone the repo: git clone https://github.com/Group6-ChecklistApp.git
+1. Clone the repo: https://github.com/pombilihamwoomo-dot/Group6-ChecklistApp/blob/main/README.md
 2. Install dependencies: npm install
 3. Run the app: expo start
 
