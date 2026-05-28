@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform
+  StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform, Image
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -27,9 +27,15 @@ export default function LoginScreen({ navigation }) {
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.card}>
-        <View style={styles.iconCircle}>
-          <Ionicons name="shield-checkmark" size={40} color="#fff" />
+
+        <View style={styles.logoWrapper}>
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={styles.logo}
+            resizeMode="contain"
+          />
         </View>
+
         <Text style={styles.title}>Mining Safety</Text>
         <Text style={styles.subtitle}>Sign in to continue</Text>
 
@@ -83,7 +89,8 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0d0d0d', justifyContent: 'center', alignItems: 'center' },
   card: { width: '88%', backgroundColor: '#1a1a1a', borderRadius: 16, padding: 28, alignItems: 'center', borderWidth: 1, borderColor: '#2a2a2a' },
-  iconCircle: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#c0392b', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  logoWrapper: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#1a0505', borderWidth: 2, borderColor: '#c0392b', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  logo: { width: 80, height: 80, borderRadius: 40 },
   title: { fontSize: 24, fontWeight: 'bold', color: '#e74c3c', marginBottom: 4 },
   subtitle: { fontSize: 13, color: '#666', marginBottom: 26 },
   inputRow: { width: '100%', flexDirection: 'row', alignItems: 'center', backgroundColor: '#111', borderRadius: 10, marginBottom: 14, borderWidth: 1, borderColor: '#2a2a2a', paddingHorizontal: 12 },
