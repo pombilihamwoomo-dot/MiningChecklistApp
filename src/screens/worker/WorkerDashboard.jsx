@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  FlatList, ActivityIndicator
+  FlatList, ActivityIndicator, Image
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
-import { collection, query, where, orderBy, getDocs } from 'firebase/firestore';
+import { collection, query, where, orderBy, getDocs, doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../../config/firebase';
 
 export default function WorkerDashboard({ navigation }) {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState('');
 
   const fetchSubmissions = async () => {
     setLoading(true);
@@ -24,7 +25,23 @@ export default function WorkerDashboard({ navigation }) {
     setLoading(false);
   };
 
-  useEffect(() => { fetchSubmissions(); }, []);
+  const fetchUser = async () => {
+    const snap = await getDoc(doc(db, 'users', auth.currentUser.uid));
+    if (snap.exists()) setUserName(snap.data().name);
+  };
+
+  useEffect(() => {
+    fetchUser();
+    fetchSubmissions();
+  }, []);
+
+  const getInitials = (name) => {
+    if (!name) return '?';
+    const parts = name.trim().split(' ');
+    return parts.length >= 2
+      ? (parts[0][0] + parts[1][0]).toUpperCase()
+      : parts[0][0].toUpperCase();
+  };
 
   const renderItem = ({ item }) => {
     const date = item.date?.toDate?.().toLocaleString() ?? 'Unknown';
@@ -69,24 +86,41 @@ export default function WorkerDashboard({ navigation }) {
 
   return (
     <View style={styles.container}>
+
+      {/* Header */}
       <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Ionicons name="shield-checkmark" size={22} color="#e74c3c" />
-          <Text style={styles.title}> My Shifts</Text>
-        </View>
+        <Image
+          source={require('../../../assets/logo.png')}
+          style={styles.headerLogo}
+          resizeMode="contain"
+        />
+        <Text style={styles.title}>My Shifts</Text>
         <TouchableOpacity style={styles.logoutBtn} onPress={() => signOut(auth)}>
           <Ionicons name="log-out-outline" size={18} color="#e74c3c" />
-          <Text style={styles.logout}> Logout</Text>
         </TouchableOpacity>
       </View>
 
+      {/* User profile row */}
+      <View style={styles.profileRow}>
+        <View style={styles.avatar}>
+          <Text style={styles.avatarTxt}>{getInitials(userName)}</Text>
+        </View>
+        <View>
+          <Text style={styles.welcomeTxt}>Welcome back,</Text>
+          <Text style={styles.userNameTxt}>{userName || 'Worker'}</Text>
+        </View>
+      </View>
+
+      {/* New check button */}
       <TouchableOpacity style={styles.newBtn} onPress={() => navigation.navigate('Checklist', { onDone: fetchSubmissions })}>
         <Ionicons name="add-circle-outline" size={20} color="#fff" />
         <Text style={styles.newBtnText}> New Safety Check</Text>
       </TouchableOpacity>
 
       {loading ? (
-        <ActivityIndicator color="#e74c3c" style={{ marginTop: 40 }} />
+        <View style={styles.emptyState}>
+          <ActivityIndicator color="#e74c3c" size="large" />
+        </View>
       ) : submissions.length === 0 ? (
         <View style={styles.emptyState}>
           <Ionicons name="clipboard-outline" size={48} color="#333" />
@@ -98,6 +132,7 @@ export default function WorkerDashboard({ navigation }) {
           keyExtractor={i => i.id}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 30 }}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>
@@ -106,13 +141,21 @@ export default function WorkerDashboard({ navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0d0d0d', padding: 20, paddingTop: 55 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  headerLeft: { flexDirection: 'row', alignItems: 'center' },
-  title: { fontSize: 20, fontWeight: 'bold', color: '#e74c3c' },
-  logoutBtn: { flexDirection: 'row', alignItems: 'center' },
-  logout: { color: '#e74c3c', fontWeight: '600', fontSize: 14 },
+
+  header: { flexDirection: 'row', alignItems: 'center', marginBottom: 20 },
+  headerLogo: { width: 32, height: 32, borderRadius: 16, marginRight: 10 },
+  title: { flex: 1, fontSize: 20, fontWeight: 'bold', color: '#e74c3c' },
+  logoutBtn: { padding: 6 },
+
+  profileRow: { flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: '#1a1a1a', borderRadius: 14, padding: 14, marginBottom: 20, borderWidth: 1, borderColor: '#2a2a2a' },
+  avatar: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#c0392b', alignItems: 'center', justifyContent: 'center' },
+  avatarTxt: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+  welcomeTxt: { color: '#555', fontSize: 12 },
+  userNameTxt: { color: '#fff', fontSize: 16, fontWeight: '700' },
+
   newBtn: { backgroundColor: '#c0392b', borderRadius: 12, padding: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 20 },
   newBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
+
   card: { backgroundColor: '#1a1a1a', borderRadius: 12, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: '#2a2a2a' },
   cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
   cardDateRow: { flexDirection: 'row', alignItems: 'center' },
@@ -124,6 +167,7 @@ const styles = StyleSheet.create({
   checkLabel: { color: '#aaa', fontSize: 13 },
   commentRow: { flexDirection: 'row', alignItems: 'flex-start', marginTop: 10, paddingTop: 10, borderTopWidth: 1, borderTopColor: '#222' },
   comment: { color: '#666', fontSize: 12, fontStyle: 'italic', flex: 1 },
+
   emptyState: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
   empty: { color: '#444', textAlign: 'center', fontSize: 15, lineHeight: 22 },
 });

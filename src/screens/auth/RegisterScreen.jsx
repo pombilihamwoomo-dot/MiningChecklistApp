@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
-  StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView
+  StyleSheet, Alert, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Image
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -32,9 +32,15 @@ export default function RegisterScreen({ navigation }) {
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.card}>
-          <View style={styles.iconCircle}>
-            <Ionicons name="person-add" size={36} color="#fff" />
+
+          <View style={styles.logoWrapper}>
+            <Image
+              source={require('../../../assets/logo.png')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
           </View>
+
           <Text style={styles.title}>Create Account</Text>
 
           <View style={styles.inputRow}>
@@ -99,7 +105,8 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0d0d0d' },
   scroll: { flexGrow: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
   card: { width: '100%', backgroundColor: '#1a1a1a', borderRadius: 16, padding: 28, alignItems: 'center', borderWidth: 1, borderColor: '#2a2a2a' },
-  iconCircle: { width: 68, height: 68, borderRadius: 34, backgroundColor: '#c0392b', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  logoWrapper: { width: 100, height: 100, borderRadius: 50, backgroundColor: '#1a0505', borderWidth: 2, borderColor: '#c0392b', alignItems: 'center', justifyContent: 'center', marginBottom: 14 },
+  logo: { width: 80, height: 80, borderRadius: 40 },
   title: { fontSize: 22, fontWeight: 'bold', color: '#e74c3c', marginBottom: 20 },
   inputRow: { width: '100%', flexDirection: 'row', alignItems: 'center', backgroundColor: '#111', borderRadius: 10, marginBottom: 14, borderWidth: 1, borderColor: '#2a2a2a', paddingHorizontal: 12 },
   inputIcon: { marginRight: 8 },
