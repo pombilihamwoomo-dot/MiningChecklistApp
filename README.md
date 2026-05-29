@@ -38,6 +38,7 @@ Stephanson_Tuukondjele_225077264
 Ruben_Paulus_222167335
 Mukuwe_Mathias_225070553
 Tuyeni_Helvi_225067080
+Taleinawa_Haipinge_225067234
 
  Roadmap
 - Offline checklist support
