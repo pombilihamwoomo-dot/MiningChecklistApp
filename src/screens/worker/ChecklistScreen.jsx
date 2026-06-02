@@ -14,7 +14,7 @@ const ITEMS = [
   { key: 'emergencyKit', label: 'Emergency Kit', desc: 'Fully stocked and accessible', icon: 'briefcase-outline' },
 ];
 
-export default function ChecklistScreen({ navigation, route }) {
+export default function ChecklistScreen({ navigation }) {
   const [checks, setChecks] = useState({ helmet: false, mask: false, emergencyKit: false });
   const [comments, setComments] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,6 @@ export default function ChecklistScreen({ navigation, route }) {
     setLoading(true);
     try {
       await addDoc(collection(db, 'checklists'), {
-        checklistId: '',
         userId: auth.currentUser.uid,
         date: Timestamp.now(),
         helmet: checks.helmet,
@@ -34,7 +33,8 @@ export default function ChecklistScreen({ navigation, route }) {
         comments,
       });
       Alert.alert('Submitted', 'Your safety check has been recorded.', [
-        { text: 'OK', onPress: () => { route.params?.onDone?.(); navigation.goBack(); } }
+        // No onDone param — useFocusEffect on the dashboard re-fetches automatically
+        { text: 'OK', onPress: () => navigation.goBack() }
       ]);
     } catch (e) {
       Alert.alert('Error', e.message);
@@ -122,20 +122,25 @@ const styles = StyleSheet.create({
   backTxt: { color: '#e74c3c', fontSize: 15 },
   title: { fontSize: 22, fontWeight: 'bold', color: '#fff', marginBottom: 6 },
   sub: { color: '#666', fontSize: 13, marginBottom: 16 },
+
   progressBar: { height: 4, backgroundColor: '#222', borderRadius: 4, marginBottom: 6, overflow: 'hidden' },
   progressFill: { height: '100%', backgroundColor: '#e74c3c', borderRadius: 4 },
   progressTxt: { color: '#666', fontSize: 12, marginBottom: 20 },
+
   card: { backgroundColor: '#1a1a1a', borderRadius: 12, padding: 14, flexDirection: 'row', alignItems: 'center', marginBottom: 10, borderWidth: 1, borderColor: '#2a2a2a', gap: 12 },
   cardChecked: { borderColor: '#1a3a1a' },
   iconBox: { width: 42, height: 42, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
   cardLeft: { flex: 1 },
   itemLabel: { color: '#fff', fontWeight: '600', fontSize: 15, marginBottom: 2 },
   itemDesc: { color: '#666', fontSize: 12 },
+
   label: { color: '#888', fontSize: 13, marginBottom: 8, marginTop: 8 },
   textAreaRow: { flexDirection: 'row', backgroundColor: '#1a1a1a', borderRadius: 10, padding: 14, gap: 8, marginBottom: 16, borderWidth: 1, borderColor: '#2a2a2a' },
   input: { flex: 1, color: '#fff', fontSize: 14, textAlignVertical: 'top' },
+
   warning: { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: '#1f0a0a', borderRadius: 10, padding: 12, marginBottom: 16, borderWidth: 1, borderColor: '#3a1010' },
   warningTxt: { color: '#e74c3c', fontSize: 13, flex: 1 },
+
   btn: { backgroundColor: '#c0392b', borderRadius: 12, padding: 16, alignItems: 'center' },
   btnClear: { backgroundColor: '#27ae60' },
   btnInner: { flexDirection: 'row', alignItems: 'center' },
