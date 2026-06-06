@@ -51,7 +51,7 @@ export default function SupervisorDashboard() {
           return tb - ta;
         });
 
-        // 4. Group by day key
+        // 4. Group by day key very importnant 
         const dayMap = {}; // { dateKey: [submission, ...] }
         submissions.forEach(s => {
           const key = toDateKey(s.date);
