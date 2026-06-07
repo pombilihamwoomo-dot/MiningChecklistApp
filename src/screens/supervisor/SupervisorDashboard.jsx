@@ -51,7 +51,7 @@ export default function SupervisorDashboard() {
           return tb - ta;
         });
 
-        // 4. Group by day key very importnant 
+        // Group by day so supervisors can compare submitted and missing worker reports.
         const dayMap = {}; // { dateKey: [submission, ...] }
         submissions.forEach(s => {
           const key = toDateKey(s.date);
@@ -82,7 +82,7 @@ export default function SupervisorDashboard() {
             absent: absentWorkers.length,
           });
 
-          // Absent banners first
+          // Absent banners appear before submissions to make missing reports visible quickly.
           absentWorkers.forEach(w => {
             built.push({ type: 'absent', id: `absent-${dateKey}-${w.id}`, workerName: w.name });
           });

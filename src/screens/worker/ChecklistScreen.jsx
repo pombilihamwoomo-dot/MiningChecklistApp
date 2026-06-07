@@ -19,11 +19,13 @@ export default function ChecklistScreen({ navigation }) {
   const [comments, setComments] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Keep checklist state keyed by item so Firestore receives predictable fields.
   const toggle = (key) => setChecks(prev => ({ ...prev, [key]: !prev[key] }));
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
+      // Store each safety item separately so supervisor reports can flag incomplete checks.
       await addDoc(collection(db, 'checklists'), {
         userId: auth.currentUser.uid,
         date: Timestamp.now(),
@@ -42,6 +44,7 @@ export default function ChecklistScreen({ navigation }) {
     setLoading(false);
   };
 
+  // A partially completed checklist is still allowed, but the UI warns the worker first.
   const allChecked = Object.values(checks).every(Boolean);
   const checkedCount = Object.values(checks).filter(Boolean).length;
 
