@@ -19,6 +19,12 @@ Usage
 - Supervisors view submissions in real time.
 - Reports are stored securely for auditing.
 
+Lahya Contribution Summary
+- Reviewed the worker checklist flow and how checklist items are saved for supervisor review.
+- Added documentation notes for portfolio evidence and demonstration preparation.
+- Added comments around checklist submission and supervisor grouping logic to make the workflow easier to explain.
+- Prepared evidence placeholders that should be replaced with real screenshots before final submission.
+
 Tech Stack
 - React Native + Expo
 - Firebase Authentication & Firestore
