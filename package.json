@@ -1,5 +1,5 @@
-//
 {
+  "_comment": "Lahya contribution evidence branch metadata update",
   "name": "miningsafety",
   "version": "1.0.0",
   "main": "index.js",
