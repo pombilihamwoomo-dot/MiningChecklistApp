@@ -20,10 +20,15 @@ Usage
 - Reports are stored securely for auditing.
 
 Lahya Contribution Summary
+- Project role: contribution evidence preparation, workflow review, documentation support, and demo planning for the MiningChecklistApp portfolio.
 - Reviewed the worker checklist flow and how checklist items are saved for supervisor review.
+- Confirmed the app flow from shift start to checklist submission and supervisor review.
+- Documented UI/demo notes for explaining the worker dashboard, checklist screen, and supervisor dashboard.
+- Added testing notes for complete submissions, incomplete submissions, comments, and supervisor visibility.
 - Added documentation notes for portfolio evidence and demonstration preparation.
 - Added comments around checklist submission and supervisor grouping logic to make the workflow easier to explain.
 - Prepared evidence placeholders that should be replaced with real screenshots before final submission.
+- Presentation evidence to capture: app UI screenshots, code contribution screenshots, branch screenshot, pull request screenshot, and demo screen screenshot.
 
 Tech Stack
 - React Native + Expo
