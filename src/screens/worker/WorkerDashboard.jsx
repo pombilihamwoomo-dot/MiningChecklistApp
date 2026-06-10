@@ -262,14 +262,14 @@ export default function WorkerDashboard({ navigation }) {
           </View>
           <View style={styles.activeShiftRight}>
             <Text style={styles.elapsedTxt}>{formatElapsed(shiftElapsed)}</Text>
-            <TouchableOpacity style={styles.clockOutBtn} onPress={handleClockOut}>
+        <TouchableOpacity style={styles.clockOutBtn} onPress={handleClockOut} accessibilityLabel="Clock out and end current shift">
               <Ionicons name="stop-circle-outline" size={14} color="#fff" />
               <Text style={styles.clockOutTxt}> Clock Out</Text>
             </TouchableOpacity>
           </View>
         </View>
       ) : (
-        <TouchableOpacity style={styles.clockInBtn} onPress={handleClockIn}>
+        <TouchableOpacity style={styles.clockInBtn} onPress={handleClockIn} accessibilityLabel="Start a new work shift">
           <Ionicons name="play-circle-outline" size={20} color="#fff" />
           <Text style={styles.clockInTxt}> Start Shift</Text>
         </TouchableOpacity>
@@ -280,12 +280,13 @@ export default function WorkerDashboard({ navigation }) {
         style={[styles.newBtn, !activeShift && styles.newBtnDisabled]}
         onPress={() => activeShift && navigation.navigate('Checklist')}
         disabled={!activeShift}
+        accessibilityLabel={activeShift ? 'Open new safety checklist' : 'Start a shift before opening a safety checklist'}
       >
         <Ionicons name="add-circle-outline" size={20} color={activeShift ? '#fff' : '#555'} />
         <Text style={[styles.newBtnText, !activeShift && { color: '#555' }]}> New Safety Check</Text>
       </TouchableOpacity>
       {!activeShift && (
-        <Text style={styles.hintTxt}>start shift  first to submit a safety check</Text>
+        <Text style={styles.hintTxt}>Start a shift first to submit a safety check.</Text>
       )}
 
       {/* Submissions list */}
