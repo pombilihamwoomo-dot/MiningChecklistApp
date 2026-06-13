@@ -1,7 +1,5 @@
 # DEMO_SCRIPT
-
 ## Safety Checklist Application Demo
-
 ### Step 1: User Registration
 
 1. Open the application.
